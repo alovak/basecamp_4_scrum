@@ -1,0 +1,48 @@
+body {
+  font-family: verdana, arial, helvetica, sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+
+
+.card {
+    border: 1px dashed #000;
+    padding: 10px;
+    float: left;
+    width: 300px;
+    height: 122px;
+}
+
+@media print
+{
+	.page-break	{ display:block; page-break-before: always; }
+	h1 { display: none; }
+	#controls { display: none; }
+	#hours { display: none; }
+}
+
+.card .index {
+    float: left;
+    padding: 5px;
+    border: 1px solid #000;
+}
+
+.card .todo {
+    float: left;
+    font-size: 60%;
+    margin: 8px;
+}
+
+.card .description {
+    margin-top: 5px;
+    font-size: 90%;
+}
+
+.card .hours {
+    margin-top: 5px;
+    font-size: 80%;
+    font-weight: bold;
+}
+.pack, .clear {
+    clear: both;
+}

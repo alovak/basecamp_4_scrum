@@ -1,0 +1,28 @@
+!!!
+- require 'active_support/core_ext/array/grouping'
+%html
+  %head
+    %title Basecamp for scrum: index cards for your whiteboard
+    %link(href="css/base.css" media="all" rel="stylesheet")
+    %script(src="js/jquery.js" type="text/javascript")
+  %body
+    - cards_in_groups = @cards.in_groups_of(14)
+    #hours
+      %strong
+        Total points:
+        = @cards.inject(0) {|sum, card| sum += card.hours}
+    - cards_in_groups.each_index do |pack|
+      #controls
+        Select pack to view and print:
+        %a{:href => "#_", :onclick => "$('.pack').hide();$('#pack_#{pack}').show();"}= pack
+    - cards_in_groups.each_with_index do |cards, pack|
+      .pack{:id => "pack_#{pack}", :style => "display: none;"}
+        %h1 Pack: #{pack}
+        - cards.each_with_index do |card, index|
+          - if card
+            .card
+              .index= pack*14 + index
+              .todo= card.todo.name
+              .clear
+              .description= card.description
+              .hours #{card.hours} pnt 
