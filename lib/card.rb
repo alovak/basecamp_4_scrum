@@ -3,49 +3,55 @@ class Card
   def initialize(ms, todo, item)
     @ms, @todo, @item = ms, todo, item
   end
-  
+
   def hours
-    return 0 unless (match = /([0-9]*\.[0-9]+|[0-9]+)h$/.match(item.content))
+    return 0 unless (match = /([0-9]*\.[0-9]+|[0-9]+)p$/.match(item.content))
     match[1].to_f
   end
 
   def description
-    item.content.gsub(/\s+([0-9]*\.[0-9]+|[0-9]+)h$/, '')
+    item.content.gsub(/\s+([0-9]*\.[0-9]+|[0-9]+)p$/, '')
   end
 
   class << self
     def find(milestone_title)
-      cards = []
       milestone = find_milestone(milestone_title)
-      todos = find_todos(milestone)
+      todos     = find_todos(milestone)
+
+      cards = []
+
       todos.each do |todo|
         items = find_items(todo)
         items.each do |item|
           cards << Card.new(milestone, todo, item)
         end
       end
+
       cards
     end
-    
+
     def find_milestone(title)
-      milestones = Basecamp::Base.find(:all, :from => "/projects/#{Basecamp::PROJECT_ID}/milestones/list")
+      milestones = Basecamp::Base.find(:all,
+                                       :from => "/projects/#{Basecamp::PROJECT_ID}/milestones/list")
+
       milestone = milestones.find {|ms| ms.title == title }
       raise ActiveRecord::RecordNotFound unless milestone
       milestone
     end
 
     def find_todos(milestone)
-      todos = Basecamp::Base.find( :all, 
-                                   :from => "/projects/#{Basecamp::PROJECT_ID}/todo_lists.xml" )
-      
-      todos = todos.inject([]) do |result, todo| 
+      todos = Basecamp::Base.find(:all,
+                                  :from => "/projects/#{Basecamp::PROJECT_ID}/todo_lists.xml" )
+
+      todos.inject([]) do |result, todo|
         result << todo if todo.milestone_id == milestone.id
         result
       end
     end
 
     def find_items(todo)
-      itesm = Basecamp::Base.find(:all, :from => "/todo_lists/#{todo.id}/todo_items.xml")
+      itesm = Basecamp::Base.find(:all,
+                                  :from => "/todo_lists/#{todo.id}/todo_items.xml")
     end
   end
 end

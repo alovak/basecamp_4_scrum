@@ -1,9 +1,9 @@
-ActiveResource::Base.user = 'ec8f3cd86dfdebc604d5f08d10c852f3d06a8878'
+ActiveResource::Base.user = 'YOUR KEY HERE'
 ActiveResource::Base.password = 'X'
-ActiveResource::Base.site = 'http://unigate.basecamphq.com'
+ActiveResource::Base.site = 'http://site-name.basecamphq.com'
 
 module Basecamp
-  PROJECT_ID = 2880241
+  PROJECT_ID = 123456   # Your project id
 
   class Base < ActiveResource::Base
   end
